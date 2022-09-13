@@ -23,9 +23,6 @@ let mixer;
 let clock = new THREE.Clock();
 const actions = [];
 
-// Objects
-// const sphereGeometry = new THREE.SphereGeometry(0.5, 64, 64);
-
 // pingu load
 const loader = new GLTFLoader();
 const url = "/textures/pingu.glb";
@@ -40,7 +37,6 @@ loader.load(
 
     //ANIMATION
     mixer = new THREE.AnimationMixer(model);
-    // 複数のアクションすべてを再生
     gltf.animations.forEach((animation) => {
       actions.push(mixer.clipAction(animation).play());
     });
@@ -52,19 +48,6 @@ loader.load(
     console.log(error);
   }
 );
-
-// Materials
-
-// const material = new THREE.MeshStandardMaterial();
-// material.metalness = 0.7;
-// material.roughness = 0.2;
-// material.normalMap = normalTexture;
-
-// material.color = new THREE.Color(0x292929);
-
-// Mesh
-// const sphere = new THREE.Mesh(sphereGeometry, material);
-// scene.add(sphere);
 
 // Lights 1
 const pointLight = new THREE.PointLight(0xffffff, 0.1);
@@ -80,39 +63,12 @@ pointLight2.intensity = 7;
 
 scene.add(pointLight2);
 
-// const light1 = gui.addFolder("Light 1");
-
-// light1.add(pointLight2.position, "y").min(-3).max(3).step(0.01);
-// light1.add(pointLight2.position, "x").min(-3).max(3).step(0.01);
-// light1.add(pointLight2.position, "z").min(-3).max(3).step(0.01);
-// light1.add(pointLight2, "intensity").min(0).max(10).step(0.01);
-
-// const pointLightHelper = new THREE.PointLightHelper(pointLight2, 1);
-// scene.add(pointLightHelper);
-
 // Lights 3
 const pointLight3 = new THREE.PointLight(0xe1ff, 2);
 pointLight3.position.set(2.13, -3, -1.98);
 pointLight3.intensity = 6.8;
 
 scene.add(pointLight3);
-// const light2 = gui.addFolder("Light 2");
-
-// light2.add(pointLight3.position, "y").min(-3).max(3).step(0.01);
-// light2.add(pointLight3.position, "x").min(-3).max(3).step(0.01);
-// light2.add(pointLight3.position, "z").min(-3).max(3).step(0.01);
-// light2.add(pointLight3, "intensity").min(0).max(10).step(0.01);
-
-// const light2Color = {
-//   color: 0xff0000,
-// };
-
-// light2.addColor(light2Color, "color").onChange(() => {
-//   pointLight3.color.set(light2Color.color);
-// });
-
-// const pointLightHelper2 = new THREE.PointLightHelper(pointLight3, 1);
-// scene.add(pointLightHelper2);
 
 /**
  * Sizes
@@ -170,41 +126,9 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  * Animate
  */
 
-let mouseX = 0;
-let mouseY = 0;
-
-let targetX = 0;
-let targetY = 0;
-
-const windowHalfX = window.innerWidth / 2;
-const windowHalfY = window.innerHeight / 2;
-
-const onDocumentMouseMove = (event) => {
-  mouseX = event.clientX - windowHalfX;
-  mouseY = event.clientY - windowHalfY;
-};
-
-const updateSphere = (event) => {
-  model.position.y = window.scrollY * 0.001;
-};
-// window.addEventListener("scroll", updateSphere);
-
-document.addEventListener("mousemove", onDocumentMouseMove);
-
 const tick = () => {
-  targetX = mouseX * 0.001;
-  targetY = mouseY * 0.001;
-
   const delta = clock.getDelta();
   mixer.update(delta);
-  // const elapsedTime = clock.getElapsedTime();
-
-  // Update objects
-  // model.rotation.y = 0.5 * elapsedTime;
-
-  // sphere.rotation.y += 0.5 * (targetX - sphere.rotation.y);
-  // sphere.rotation.x += 0.05 * (targetY - sphere.rotation.x);
-  // sphere.position.z += -0.05 * (targetY - sphere.rotation.x);
 
   // Update Orbital Controls
   controls.update();
@@ -215,5 +139,3 @@ const tick = () => {
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
 };
-
-// tick();
